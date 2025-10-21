@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
-public class ThreadPoolSortingStrategy<T> implements SortingStrategy<T> {
+public class MergeSortingStrategy<T> implements SortingStrategy<T> {
     @Override
     public List<T> sort(List<T> list, Comparator<T> comparator, ExecutorService executor) {
         if (list == null || list.isEmpty() || list.size() == 1) return list;
