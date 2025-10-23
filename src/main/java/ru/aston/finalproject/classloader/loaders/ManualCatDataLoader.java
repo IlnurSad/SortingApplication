@@ -4,6 +4,8 @@ import ru.aston.finalproject.classloader.entities.Cat;
 import ru.aston.finalproject.classloader.interfaces.DataLoader;
 import ru.aston.finalproject.classloader.interfaces.Validator;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class ManualCatDataLoader implements DataLoader<Cat> {
@@ -16,13 +18,13 @@ public class ManualCatDataLoader implements DataLoader<Cat> {
     }
 
     @Override
-    public Cat[] loadData(int size) {
-        Cat[] data = new Cat[size];
+    public List<Cat> loadData(int size) {
+        List<Cat> data = new ArrayList<>();
         System.out.println("Введите данные для " + size + " котов:");
 
         for (int i = 0; i < size; i++) {
             System.out.println("Кот " + (i + 1) + ":");
-            data[i] = readValidCat();
+            data.add(readValidCat());
         }
 
         return data;

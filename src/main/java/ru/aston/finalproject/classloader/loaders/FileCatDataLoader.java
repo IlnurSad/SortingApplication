@@ -16,7 +16,7 @@ public class FileCatDataLoader implements DataLoader<Cat> {
     }
 
     @Override
-    public Cat[] loadData(int size) {
+    public List<Cat> loadData(int size) {
         createSampleFile();
 
         List<Cat> cats = new ArrayList<>();
@@ -44,7 +44,7 @@ public class FileCatDataLoader implements DataLoader<Cat> {
             System.out.println("Ошибка чтения файла: " + e.getMessage());
         }
 
-        return cats.toArray(new Cat[0]);
+        return cats;
     }
 
     private void createSampleFile() {

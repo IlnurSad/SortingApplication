@@ -4,6 +4,8 @@ import ru.aston.finalproject.classloader.entities.Cat;
 import ru.aston.finalproject.classloader.interfaces.DataLoader;
 import ru.aston.finalproject.classloader.interfaces.Validator;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class RandomCatDataLoader implements DataLoader<Cat> {
@@ -16,8 +18,8 @@ public class RandomCatDataLoader implements DataLoader<Cat> {
     }
 
     @Override
-    public Cat[] loadData(int size) {
-        Cat[] data = new Cat[size];
+    public List<Cat> loadData(int size) {
+        List<Cat> data = new ArrayList<>();
         String[] names = {"Мурзик", "Барсик", "Васька", "Рыжик", "Снежок", "Пушистик", "Гарфилд", "Том"};
         String[] breeds = {"Сиамская", "Персидская", "Мейн-кун", "Сфинкс", "Британская", "Сибирская", "Бенгальская", "Дворняжка"};
 
@@ -26,11 +28,13 @@ public class RandomCatDataLoader implements DataLoader<Cat> {
             int age = random.nextInt(15) + 1;
             String breed = breeds[random.nextInt(breeds.length)];
 
-            data[i] = Cat.builder()
+            Cat cat = Cat.builder()
                     .setName(name)
                     .setAge(age)
                     .setBreed(breed)
                     .build();
+
+            data.add(cat);
         }
 
         return data;

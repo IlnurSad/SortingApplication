@@ -16,7 +16,7 @@ public class FilePersonDataLoader implements DataLoader<Person> {
     }
 
     @Override
-    public Person[] loadData(int size) {
+    public List<Person> loadData(int size) {
         createSampleFile();
 
         List<Person> persons = new ArrayList<>();
@@ -44,7 +44,7 @@ public class FilePersonDataLoader implements DataLoader<Person> {
             System.out.println("Ошибка чтения файла: " + e.getMessage());
         }
 
-        return persons.toArray(new Person[0]);
+        return persons;
     }
 
     private void createSampleFile() {

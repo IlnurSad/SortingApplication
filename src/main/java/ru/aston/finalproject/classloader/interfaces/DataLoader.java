@@ -1,5 +1,7 @@
 package ru.aston.finalproject.classloader.interfaces;
 
+import java.util.List;
+
 public interface DataLoader<T> {
-    T[] loadData(int size);
+    List<T> loadData(int size);
 }

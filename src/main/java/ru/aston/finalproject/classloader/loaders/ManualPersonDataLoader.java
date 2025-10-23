@@ -4,6 +4,8 @@ import ru.aston.finalproject.classloader.entities.Person;
 import ru.aston.finalproject.classloader.interfaces.DataLoader;
 import ru.aston.finalproject.classloader.interfaces.Validator;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class ManualPersonDataLoader implements DataLoader<Person> {
@@ -16,13 +18,13 @@ public class ManualPersonDataLoader implements DataLoader<Person> {
     }
 
     @Override
-    public Person[] loadData(int size) {
-        Person[] data = new Person[size];
+    public List<Person> loadData(int size) {
+        List<Person> data = new ArrayList<>();
         System.out.println("Введите данные для " + size + " человек:");
 
         for (int i = 0; i < size; i++) {
             System.out.println("Человек " + (i + 1) + ":");
-            data[i] = readValidPerson();
+            data.add(readValidPerson());
         }
 
         return data;

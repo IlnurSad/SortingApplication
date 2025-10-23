@@ -3,11 +3,10 @@ package ru.aston.finalproject.classloader;
 import ru.aston.finalproject.classloader.entities.validators.CatValidator;
 import ru.aston.finalproject.classloader.entities.validators.PersonValidator;
 import ru.aston.finalproject.classloader.interfaces.DataLoader;
-import ru.aston.finalproject.classloader.interfaces.SortStrategy;
+
 import ru.aston.finalproject.classloader.loaders.*;
 
 import java.util.*;
-import java.util.concurrent.Future;
 
 public class SortingApplication {
     private final Scanner scanner;
@@ -86,14 +85,14 @@ public class SortingApplication {
             return;
         }
 
-        Object[] data = dataLoader.loadData(size);
-        if (data.length == 0) {
+        List<Object> data = (List<Object>) dataLoader.loadData(size);
+        if (data.isEmpty()) {
             System.out.println("Не удалось загрузить данные.");
             return;
         }
 
         System.out.println("\nИсходные данные:");
-        printArray(data);
+        printList(data);
     }
 
     private DataLoader<?> selectDataLoader(int entityType) {
@@ -118,9 +117,9 @@ public class SortingApplication {
         return loader;
     }
 
-    private void printArray(Object[] array) {
-        for (int i = 0; i < array.length; i++) {
-            System.out.println((i + 1) + ". " + array[i]);
+    private void printList(List<Object> list) {
+        for (int i = 0; i < list.size(); i++) {
+            System.out.println((i + 1) + ". " + list.get(i));
         }
     }
 
