@@ -1,6 +1,6 @@
 package ru.aston.finalproject.loaders;
 
-import ru.aston.finalproject.entities.Cat;
+import ru.aston.finalproject.entity.Cat;
 import ru.aston.finalproject.interfaces.DataLoader;
 import ru.aston.finalproject.interfaces.Validator;
 
@@ -27,7 +27,7 @@ public class RandomCatDataLoader implements DataLoader<Cat> {
         System.out.println("Генерируем " + size + " случайных котов...");
 
         for (int i = 0; i < size; i++) {
-            String name = names[random.nextInt(names.length)] + (i + 1);
+            String name = names[random.nextInt(names.length)];
             int age = random.nextInt(15) + 1;
             String breed = breeds[random.nextInt(breeds.length)];
 
@@ -44,6 +44,6 @@ public class RandomCatDataLoader implements DataLoader<Cat> {
     }
 
     private int getRandomSize() {
-        return 5 + random.nextInt(6); // от 5 до 10 котов
+        return 5 + random.nextInt(10);
     }
 }

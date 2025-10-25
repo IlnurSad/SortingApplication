@@ -1,6 +1,6 @@
-package ru.aston.finalproject.entities.validators;
+package ru.aston.finalproject.entity.validators;
 
-import ru.aston.finalproject.entities.Person;
+import ru.aston.finalproject.entity.Person;
 import ru.aston.finalproject.interfaces.Validator;
 
 public class PersonValidator implements Validator<Person> {

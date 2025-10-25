@@ -1,7 +1,7 @@
 package ru.aston.finalproject.managers;
 
-import ru.aston.finalproject.entities.validators.CatValidator;
-import ru.aston.finalproject.entities.validators.PersonValidator;
+import ru.aston.finalproject.entity.validators.CatValidator;
+import ru.aston.finalproject.entity.validators.PersonValidator;
 import ru.aston.finalproject.interfaces.DataLoader;
 import ru.aston.finalproject.loaders.*;
 

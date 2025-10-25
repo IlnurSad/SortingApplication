@@ -1,9 +1,9 @@
 package ru.aston.finalproject.managers;
 
-import ru.aston.finalproject.entities.comparators.CatAgeComparator;
-import ru.aston.finalproject.entities.comparators.CatBreedComparator;
-import ru.aston.finalproject.entities.comparators.PersonAgeComparator;
-import ru.aston.finalproject.entities.comparators.PersonProfessionComparator;
+import ru.aston.finalproject.entity.comparators.CatAgeComparator;
+import ru.aston.finalproject.entity.comparators.CatBreedComparator;
+import ru.aston.finalproject.entity.comparators.PersonAgeComparator;
+import ru.aston.finalproject.entity.comparators.PersonProfessionComparator;
 import ru.aston.finalproject.interfaces.SortStrategy;
 import ru.aston.finalproject.strategies.sorting.BubbleSortStrategy;
 import ru.aston.finalproject.strategies.sorting.QuickSortStrategy;

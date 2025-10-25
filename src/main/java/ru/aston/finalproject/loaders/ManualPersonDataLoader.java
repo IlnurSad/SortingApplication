@@ -1,6 +1,6 @@
 package ru.aston.finalproject.loaders;
 
-import ru.aston.finalproject.entities.Person;
+import ru.aston.finalproject.entity.Person;
 import ru.aston.finalproject.interfaces.DataLoader;
 import ru.aston.finalproject.interfaces.Validator;
 

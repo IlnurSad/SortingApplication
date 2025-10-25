@@ -1,6 +1,6 @@
-package ru.aston.finalproject.entities.comparators;
+package ru.aston.finalproject.entity.comparators;
 
-import ru.aston.finalproject.entities.Person;
+import ru.aston.finalproject.entity.Person;
 
 import java.util.Comparator;
 

@@ -1,4 +1,4 @@
-package ru.aston.finalproject.application;
+package ru.aston.finalproject;
 
 import ru.aston.finalproject.managers.DataLoaderManager;
 import ru.aston.finalproject.managers.MenuManager;

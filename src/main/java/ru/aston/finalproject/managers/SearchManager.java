@@ -1,7 +1,7 @@
 package ru.aston.finalproject.managers;
 
-import ru.aston.finalproject.entities.Cat;
-import ru.aston.finalproject.entities.Person;
+import ru.aston.finalproject.entity.Cat;
+import ru.aston.finalproject.entity.Person;
 import ru.aston.finalproject.interfaces.SearchStrategy;
 import ru.aston.finalproject.strategies.search.BinarySearchStrategy;
 

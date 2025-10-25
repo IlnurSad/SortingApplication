@@ -1,6 +1,6 @@
-package ru.aston.finalproject.entities.validators;
+package ru.aston.finalproject.entity.validators;
 
-import ru.aston.finalproject.entities.Cat;
+import ru.aston.finalproject.entity.Cat;
 import ru.aston.finalproject.interfaces.Validator;
 
 public class CatValidator implements Validator<Cat> {

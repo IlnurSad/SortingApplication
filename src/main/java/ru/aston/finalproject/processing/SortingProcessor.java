@@ -1,7 +1,7 @@
 package ru.aston.finalproject.processing;
 
-import ru.aston.finalproject.entities.Cat;
-import ru.aston.finalproject.entities.Person;
+import ru.aston.finalproject.entity.Cat;
+import ru.aston.finalproject.entity.Person;
 import ru.aston.finalproject.interfaces.DataLoader;
 import ru.aston.finalproject.interfaces.SortStrategy;
 import ru.aston.finalproject.managers.*;

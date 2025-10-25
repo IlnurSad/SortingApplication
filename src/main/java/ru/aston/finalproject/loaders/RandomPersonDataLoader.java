@@ -1,6 +1,6 @@
 package ru.aston.finalproject.loaders;
 
-import ru.aston.finalproject.entities.Person;
+import ru.aston.finalproject.entity.Person;
 import ru.aston.finalproject.interfaces.DataLoader;
 import ru.aston.finalproject.interfaces.Validator;
 
@@ -27,7 +27,7 @@ public class RandomPersonDataLoader implements DataLoader<Person> {
         System.out.println("Генерируем " + size + " случайных людей...");
 
         for (int i = 0; i < size; i++) {
-            String name = names[random.nextInt(names.length)] + " " + (i + 1);
+            String name = names[random.nextInt(names.length)];
             int age = 20 + random.nextInt(40);
             String profession = professions[random.nextInt(professions.length)];
 
@@ -44,6 +44,6 @@ public class RandomPersonDataLoader implements DataLoader<Person> {
     }
 
     private int getRandomSize() {
-        return 5 + random.nextInt(6); // от 5 до 10 человек
+        return 5 + random.nextInt(10);
     }
 }

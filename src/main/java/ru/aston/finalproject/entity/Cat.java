@@ -1,4 +1,4 @@
-package ru.aston.finalproject.entities;
+package ru.aston.finalproject.entity;
 
 import java.util.Objects;
 
