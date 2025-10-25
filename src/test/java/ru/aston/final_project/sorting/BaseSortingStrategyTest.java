@@ -1,6 +1,7 @@
-package org.example.sorting;
+package ru.aston.final_project.sorting;
 
-import org.example.sorting.entities.Cat;
+import ru.aston.final_project.sorting.BaseSortingStrategy;
+import ru.aston.final_project.sorting.entities.Cat;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,7 +13,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-class MergeSortingStrategyTest {
+class BaseSortingStrategyTest {
     private ExecutorService executor;
     
     @BeforeEach

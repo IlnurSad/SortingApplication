@@ -1,4 +1,4 @@
-package org.example.sorting;
+package ru.aston.final_project.sorting;
 
 import java.util.ArrayList;
 import java.util.Comparator;
