@@ -28,7 +28,6 @@ class EvenNumberSortingStrategyTest {
         executor.shutdown();
     }
     
-    
     @Test
     void whenSortingIntegerNaturalOrder_thenResultIsListSortedEvenNumberByAsc() {
         List<Integer> actualList = new ArrayList<>(List.of(10, 1, 5, 12, 3, 9, 8, 6, 5, 0, 4, 7));

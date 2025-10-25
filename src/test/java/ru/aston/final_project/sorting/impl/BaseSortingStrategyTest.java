@@ -4,7 +4,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import ru.aston.final_project.sorting.entities.Cat;
+import ru.aston.final_project.sorting.entities.Person;
+import ru.aston.utils.TestData;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -23,6 +24,40 @@ class BaseSortingStrategyTest {
     @AfterEach
     void close() {
         executor.shutdown();
+    }
+    
+    @Test
+    void whenSortingPersonByNaturalOrder_thenResultIsListSortedByComparingTo() {
+        List<Person> actualList = new ArrayList<>(TestData.createPersons());
+        BaseSortingStrategy<Person> strategy = new BaseSortingStrategy<>();
+        
+        List<Person> sortedList = strategy.sort(actualList, Comparator.naturalOrder(), executor);
+        
+        String expectedString = "[Person{name='Борис', age=54, profession='Космонавт'}, " + "Person{name='Влад', age=22, profession='Менеджер'}, "
+                + "Person{name='Владимир', age=36, profession='Стоматолог'}, " + "Person{name='Владимир', age=46, profession='Программист'}, "
+                + "Person{name='Григория', age=36, profession='Администратор'}, " + "Person{name='Екатерина', age=27, profession='Повар'}, "
+                + "Person{name='Ольга', age=31, profession='Девопс'}, " + "Person{name='Ольга', age=65, profession='Флорист'}, "
+                + "Person{name='Сергей', age=29, profession='Инженер'}, " + "Person{name='Татьяна', age=18, profession='Артист'}, "
+                + "Person{name='Фёдор', age=29, profession='Хирург'}]";
+        
+        Assertions.assertEquals(expectedString, sortedList.toString());
+    }
+    
+    @Test
+    void whenSortingPersonByField_thenResultIsListSortedByField() {
+        List<Person> actualList = new ArrayList<>(TestData.createPersons());
+        BaseSortingStrategy<Person> strategy = new BaseSortingStrategy<>();
+        
+        List<Person> sortedList = strategy.sort(actualList, Comparator.comparing(Person::getName), executor);
+        
+        String expectedString = "[Person{name='Борис', age=54, profession='Космонавт'}, " + "Person{name='Влад', age=22, profession='Менеджер'}, "
+                + "Person{name='Владимир', age=36, profession='Стоматолог'}, " + "Person{name='Владимир', age=46, profession='Программист'}, "
+                + "Person{name='Григория', age=36, profession='Администратор'}, " + "Person{name='Екатерина', age=27, profession='Повар'}, "
+                + "Person{name='Ольга', age=65, profession='Флорист'}, " + "Person{name='Ольга', age=31, profession='Девопс'}, "
+                + "Person{name='Сергей', age=29, profession='Инженер'}, " + "Person{name='Татьяна', age=18, profession='Артист'}, "
+                + "Person{name='Фёдор', age=29, profession='Хирург'}]";
+        
+        Assertions.assertEquals(expectedString, sortedList.toString());
     }
     
     @Test
@@ -49,35 +84,6 @@ class BaseSortingStrategyTest {
     
     @Test
     void whenSortingIntegerNaturalOrder_thenResultIsListSortedByAsc() {
-        List<Integer> actualList = new ArrayList<>(List.of(2, 1, 5, 3, 9, 6, 10, 8, 4, 7));
-        BaseSortingStrategy<Integer> strategy = new BaseSortingStrategy<>();
-        
-        List<Integer> sortedList = strategy.sort(actualList, Comparator.naturalOrder(), executor);
-        List<Integer> expectedList = List.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
-        
-        Assertions.assertEquals(expectedList, sortedList);
-    }
-    
-    @Test
-    void whenSortingCatByAge_thenResultIsListSortedByAsc() {
-        List<Cat> actualList = new ArrayList<>(List.of(new Cat.CatBuilder().setName("Васька").setAge(2).setBreed("Чеширский").build(),
-                                                       new Cat.CatBuilder().setName("Мурка").setAge(4).setBreed("Сибирский").build(),
-                                                       new Cat.CatBuilder().setName("Жучка").setAge(9).setBreed("Британский").build(),
-                                                       new Cat.CatBuilder().setName("Ночка").setAge(8).setBreed("Русский").build(),
-                                                       new Cat.CatBuilder().setName("Тучка").setAge(1).setBreed("Канадский").build()));
-        BaseSortingStrategy<Cat> strategy = new BaseSortingStrategy<>();
-        
-        List<Cat> sortedList = strategy.sort(actualList, Comparator.comparing(Cat::getAge), executor);
-        
-        System.out.println(sortedList);
-        
-        
-//        List<Cat> expectedList = List.of(10, 9, 8, 7, 6, 5, 4, 3, 2, 1);
-//        Assertions.assertEquals(expectedList, sortedList);
-    }
-    
-    @Test
-    void whenSortingPersonByAge_thenResultIsListSortedByAsc() {
         List<Integer> actualList = new ArrayList<>(List.of(2, 1, 5, 3, 9, 6, 10, 8, 4, 7));
         BaseSortingStrategy<Integer> strategy = new BaseSortingStrategy<>();
         
