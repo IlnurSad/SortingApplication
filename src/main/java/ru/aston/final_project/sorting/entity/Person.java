@@ -1,4 +1,4 @@
-package ru.aston.final_project.sorting.entities;
+package ru.aston.final_project.sorting.entity;
 
 import java.util.Objects;
 

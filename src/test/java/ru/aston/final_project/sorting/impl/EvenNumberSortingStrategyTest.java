@@ -4,7 +4,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import ru.aston.final_project.sorting.entities.Person;
+import ru.aston.final_project.sorting.entity.Person;
 import ru.aston.utils.TestData;
 
 import java.util.ArrayList;
@@ -12,8 +12,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class EvenNumberSortingStrategyTest {
     private ExecutorService executor;

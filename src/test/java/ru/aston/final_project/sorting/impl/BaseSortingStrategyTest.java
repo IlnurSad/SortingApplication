@@ -4,7 +4,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import ru.aston.final_project.sorting.entities.Person;
+import ru.aston.final_project.sorting.entity.Person;
 import ru.aston.utils.TestData;
 
 import java.util.ArrayList;

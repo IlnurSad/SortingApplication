@@ -1,7 +1,7 @@
 package ru.aston.final_project.sorting.impl;
 
-import ru.aston.final_project.sorting.entities.Cat;
-import ru.aston.final_project.sorting.entities.Person;
+import ru.aston.final_project.sorting.entity.Cat;
+import ru.aston.final_project.sorting.entity.Person;
 
 import java.util.Comparator;
 import java.util.List;
