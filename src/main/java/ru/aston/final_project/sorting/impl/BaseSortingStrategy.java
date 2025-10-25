@@ -1,4 +1,6 @@
-package ru.aston.final_project.sorting;
+package ru.aston.final_project.sorting.impl;
+
+import ru.aston.final_project.sorting.service.SortingStrategy;
 
 import java.util.ArrayList;
 import java.util.Comparator;

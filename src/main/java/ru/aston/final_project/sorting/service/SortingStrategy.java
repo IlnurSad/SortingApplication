@@ -1,4 +1,4 @@
-package ru.aston.final_project.sorting;
+package ru.aston.final_project.sorting.service;
 
 import java.util.Comparator;
 import java.util.List;

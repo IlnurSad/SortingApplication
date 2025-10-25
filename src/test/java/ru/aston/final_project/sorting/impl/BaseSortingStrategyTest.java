@@ -1,11 +1,10 @@
-package ru.aston.final_project.sorting;
+package ru.aston.final_project.sorting.impl;
 
-import ru.aston.final_project.sorting.BaseSortingStrategy;
-import ru.aston.final_project.sorting.entities.Cat;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import ru.aston.final_project.sorting.entities.Cat;
 
 import java.util.ArrayList;
 import java.util.Comparator;

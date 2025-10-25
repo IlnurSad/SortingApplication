@@ -1,4 +1,4 @@
-package ru.aston.final_project.sorting;
+package ru.aston.final_project.sorting.impl;
 
 import ru.aston.final_project.sorting.entities.Cat;
 import ru.aston.final_project.sorting.entities.Person;
