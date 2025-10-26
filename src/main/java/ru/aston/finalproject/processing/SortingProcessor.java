@@ -5,6 +5,7 @@ import ru.aston.finalproject.entity.Person;
 import ru.aston.finalproject.interfaces.DataLoader;
 import ru.aston.finalproject.interfaces.SortStrategy;
 import ru.aston.finalproject.managers.*;
+import ru.aston.finalproject.utils.FileAppender;
 
 import java.util.List;
 import java.util.concurrent.Future;
@@ -15,6 +16,7 @@ public class SortingProcessor {
     private final SortStrategyManager strategyManager;
     private final SearchManager searchManager;
     private final SortingManager<Object> sortingManager;
+    private final FileAppender<Object> fileAppender;
 
     public SortingProcessor(MenuManager menuManager,
                             DataLoaderManager dataLoaderManager,
@@ -25,6 +27,7 @@ public class SortingProcessor {
         this.strategyManager = strategyManager;
         this.searchManager = searchManager;
         this.sortingManager = new SortingManager<>(2);
+        this.fileAppender = new FileAppender<>("output.txt");
     }
 
     @SuppressWarnings("unchecked")
@@ -68,6 +71,8 @@ public class SortingProcessor {
             System.out.println("\nОтсортированные данные:");
             printList(data);
 
+            saveSortedData(data);
+
             performSearchWithType(data, entityType);
 
         } catch (Exception e) {
@@ -94,5 +99,10 @@ public class SortingProcessor {
         for (int i = 0; i < list.size(); i++) {
             System.out.println((i + 1) + ". " + list.get(i));
         }
+    }
+
+    private void saveSortedData(List<Object> sortedData) {
+        fileAppender.appendData(sortedData, Object::toString);
+        System.out.println("Отсортированные данные успешно записаны в файл.");
     }
 }
