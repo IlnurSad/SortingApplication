@@ -43,7 +43,11 @@ public class SortingManager {
         if (strategy == null) {
             throw new IllegalArgumentException("Неизвестный тип сортировки: " + selectedStrategy);
         }
-        return strategy.sort(list, comparator, executor);
+        try {
+            return strategy.sort(list, comparator, executor);
+        } finally {
+            executor.shutdown();
+        }
     }
 }
 
