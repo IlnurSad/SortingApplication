@@ -3,7 +3,6 @@ package ru.aston.finalproject;
 import ru.aston.finalproject.managers.DataLoaderManager;
 import ru.aston.finalproject.managers.MenuManager;
 import ru.aston.finalproject.managers.SearchManager;
-import ru.aston.finalproject.managers.SortStrategyManager;
 import ru.aston.finalproject.processing.SortingProcessor;
 
 import java.util.Scanner;
@@ -12,7 +11,6 @@ public class SortingApplication {
     private final Scanner scanner;
     private final MenuManager menuManager;
     private final DataLoaderManager dataLoaderManager;
-    private final SortStrategyManager strategyManager;
     private final SearchManager searchManager;
     private final SortingProcessor sortingProcessor;
 
@@ -20,9 +18,8 @@ public class SortingApplication {
         this.scanner = new Scanner(System.in);
         this.menuManager = new MenuManager(scanner);
         this.dataLoaderManager = new DataLoaderManager(scanner);
-        this.strategyManager = new SortStrategyManager();
         this.searchManager = new SearchManager(scanner);
-        this.sortingProcessor = new SortingProcessor(menuManager, dataLoaderManager, strategyManager, searchManager);
+        this.sortingProcessor = new SortingProcessor(menuManager, dataLoaderManager, searchManager);
     }
 
     public void run() {
@@ -60,7 +57,6 @@ public class SortingApplication {
 
     private void shutdown() {
         System.out.println("Выход из программы...");
-        sortingProcessor.shutdown();
         scanner.close();
     }
 

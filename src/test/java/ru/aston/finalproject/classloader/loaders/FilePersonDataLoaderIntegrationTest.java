@@ -1,14 +1,14 @@
 package ru.aston.finalproject.classloader.loaders;
 
-import org.junit.Test;
-import ru.aston.finalproject.entities.Person;
-import ru.aston.finalproject.entities.validators.PersonValidator;
+import org.junit.jupiter.api.Test;
+import ru.aston.finalproject.entity.Person;
+import ru.aston.finalproject.entity.validators.PersonValidator;
 import ru.aston.finalproject.interfaces.Validator;
 import ru.aston.finalproject.loaders.FilePersonDataLoader;
 
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class FilePersonDataLoaderIntegrationTest {
     private final Validator<Person> validator = new PersonValidator();

@@ -3,78 +3,77 @@ package ru.aston.finalproject.processing;
 import ru.aston.finalproject.entity.Cat;
 import ru.aston.finalproject.entity.Person;
 import ru.aston.finalproject.interfaces.DataLoader;
-import ru.aston.finalproject.interfaces.SortStrategy;
-import ru.aston.finalproject.managers.*;
+import ru.aston.finalproject.managers.DataLoaderManager;
+import ru.aston.finalproject.managers.MenuManager;
+import ru.aston.finalproject.managers.SearchManager;
+import ru.aston.finalproject.managers.SortingManager;
 
+import java.util.Comparator;
 import java.util.List;
-import java.util.concurrent.Future;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class SortingProcessor {
     private final MenuManager menuManager;
     private final DataLoaderManager dataLoaderManager;
-    private final SortStrategyManager strategyManager;
     private final SearchManager searchManager;
-    private final SortingManager<Object> sortingManager;
-
-    public SortingProcessor(MenuManager menuManager,
-                            DataLoaderManager dataLoaderManager,
-                            SortStrategyManager strategyManager,
-                            SearchManager searchManager) {
+    private final ExecutorService executor;
+    
+    public SortingProcessor(MenuManager menuManager, DataLoaderManager dataLoaderManager, SearchManager searchManager) {
         this.menuManager = menuManager;
         this.dataLoaderManager = dataLoaderManager;
-        this.strategyManager = strategyManager;
         this.searchManager = searchManager;
-        this.sortingManager = new SortingManager<>(2);
+        this.executor = Executors.newFixedThreadPool(4);
     }
-
+    
     @SuppressWarnings("unchecked")
     public void processSorting(int entityType, String entityName) {
         menuManager.printDataLoaderMenu();
         int loaderType = menuManager.readIntInput("Выберите способ: ");
-
+        
         if (!dataLoaderManager.isValidLoaderType(entityType, loaderType)) {
             System.out.println("Неверный выбор загрузчика данных.");
             return;
         }
-
+        
         DataLoader<?> dataLoader = dataLoaderManager.getDataLoader(entityType, loaderType);
-
+        
         List<Object> data = (List<Object>) dataLoader.loadData();
         if (data.isEmpty()) {
             System.out.println("Не удалось загрузить данные.");
             return;
         }
-
+        
         System.out.println("\nЗагружено элементов: " + data.size());
         System.out.println("Исходные данные:");
         printList(data);
-
-        menuManager.printSortStrategyMenu(entityType);
+        
+        menuManager.printSortStrategyMenu();
         int strategyType = menuManager.readIntInput("Выберите стратегию: ");
-
-        if (!strategyManager.isValidStrategyType(strategyType)) {
+        
+        if (!isValidStrategyType(strategyType)) {
             System.out.println("Неверный выбор стратегии сортировки.");
             return;
         }
-
-        SortStrategy<Object> sortStrategy = strategyManager.getSortStrategy(entityType, strategyType);
-
+        
+        Comparator<Object> comparator = menuManager.selectComparator(entityType);
+        
         try {
             System.out.println("\nСортировка...");
-            Future<Void> future = sortingManager.sortAsync(data, sortStrategy);
-            future.get();
+            SortingManager sortingManager = new SortingManager(strategyType);
+            data = sortingManager.sort(data, comparator, executor);
             System.out.println("Сортировка завершена!");
-
+            
             System.out.println("\nОтсортированные данные:");
             printList(data);
-
+            
             performSearchWithType(data, entityType);
-
+            
         } catch (Exception e) {
             System.out.println("Ошибка при сортировке: " + e.getMessage());
         }
     }
-
+    
     @SuppressWarnings("unchecked")
     private void performSearchWithType(List<Object> sortedData, int entityType) {
         if (entityType == 1) {
@@ -85,14 +84,14 @@ public class SortingProcessor {
             searchManager.performPersonSearch(personList);
         }
     }
-
-    public void shutdown() {
-        sortingManager.shutdown();
-    }
-
+    
     private void printList(List<Object> list) {
         for (int i = 0; i < list.size(); i++) {
             System.out.println((i + 1) + ". " + list.get(i));
         }
+    }
+    
+    public boolean isValidStrategyType(int strategyType) {
+        return strategyType >= 1 && strategyType <= 2;
     }
 }

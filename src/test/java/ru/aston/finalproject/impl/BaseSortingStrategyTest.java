@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.aston.finalproject.entity.Person;
-import ru.aston.finalproject.impl.BaseSortingStrategy;
+import ru.aston.finalproject.strategies.sorting.BaseSortingStrategy;
 import ru.aston.utils.TestData;
 
 import java.util.ArrayList;

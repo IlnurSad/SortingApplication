@@ -1,4 +1,4 @@
-package ru.aston.finalproject.service;
+package ru.aston.finalproject.interfaces;
 
 import java.util.Comparator;
 import java.util.List;

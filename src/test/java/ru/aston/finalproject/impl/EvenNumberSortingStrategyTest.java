@@ -1,12 +1,11 @@
 package ru.aston.finalproject.impl;
 
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.aston.finalproject.entity.Person;
-import ru.aston.finalproject.impl.BaseSortingStrategy;
-import ru.aston.finalproject.impl.EvenNumberSortingStrategy;
+import ru.aston.finalproject.strategies.sorting.BaseSortingStrategy;
+import ru.aston.finalproject.strategies.sorting.EvenNumberSortingStrategy;
 import ru.aston.utils.TestData;
 
 import java.util.ArrayList;
@@ -14,6 +13,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class EvenNumberSortingStrategyTest {
     private ExecutorService executor;
@@ -36,7 +37,7 @@ class EvenNumberSortingStrategyTest {
         List<Integer> sortedList = strategy.sort(actualList, Comparator.naturalOrder(), executor);
         List<Integer> expectedList = List.of(0, 1, 5, 4, 3, 9, 6, 8, 5, 10, 12, 7);
         
-        Assertions.assertEquals(expectedList, sortedList);
+        assertEquals(expectedList, sortedList);
     }
     
     @Test
@@ -53,6 +54,6 @@ class EvenNumberSortingStrategyTest {
                 + "Person{name='Ольга', age=31, profession='Девопс'}, " + "Person{name='Борис', age=54, profession='Космонавт'}, "
                 + "Person{name='Фёдор', age=29, profession='Хирург'}]";
         
-        Assertions.assertEquals(expectedString, sortedList.toString());
+        assertEquals(expectedString, sortedList.toString());
     }
 }

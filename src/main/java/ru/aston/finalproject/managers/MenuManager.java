@@ -1,5 +1,15 @@
 package ru.aston.finalproject.managers;
 
+import ru.aston.finalproject.entity.Cat;
+import ru.aston.finalproject.entity.Person;
+import ru.aston.finalproject.entity.comparators.CatAgeComparator;
+import ru.aston.finalproject.entity.comparators.CatBreedComparator;
+import ru.aston.finalproject.entity.comparators.CatNameComparator;
+import ru.aston.finalproject.entity.comparators.PersonAgeComparator;
+import ru.aston.finalproject.entity.comparators.PersonNameComparator;
+import ru.aston.finalproject.entity.comparators.PersonProfessionComparator;
+
+import java.util.Comparator;
 import java.util.Scanner;
 
 public class MenuManager {
@@ -23,18 +33,10 @@ public class MenuManager {
         System.out.println("3. Вручную");
     }
 
-    public void printSortStrategyMenu(int entityType) {
+    public void printSortStrategyMenu() {
         System.out.println("\n=== Выбор стратегии сортировки ===");
-        System.out.println("1. Пузырьковая сортировка (по имени)");
-        System.out.println("2. Быстрая сортировка (по имени)");
-
-        if (entityType == 1) {
-            System.out.println("3. Сортировка по возрасту");
-            System.out.println("4. Сортировка по породе");
-        } else {
-            System.out.println("3. Сортировка по возрасту");
-            System.out.println("4. Сортировка по профессии");
-        }
+        System.out.println("1. Сортировка слиянием в потоках");
+        System.out.println("2. Сортировка чётных чисел в потоках (доп.задание 1)");
     }
 
     public int readIntInput(String prompt) {
@@ -57,5 +59,33 @@ public class MenuManager {
         System.out.print(question + " (y/n): ");
         String answer = scanner.nextLine();
         return answer.equalsIgnoreCase("y");
+    }
+    
+    public Comparator selectComparator(int entityType) {
+        System.out.println("\n=== Выберите поле для сортировки ===");
+        System.out.println("1. Natural order (как определено в классе compareTo)");
+        System.out.println("2. По имени");
+        System.out.println("3. По возрасту");
+        System.out.println("4. По дополнительному полю");
+        
+        int choice = readIntInput("Ваш выбор: ");
+        
+        if (entityType == 1) {
+            return switch (choice) {
+                case 1 -> Comparator.naturalOrder();
+                case 2 -> new CatNameComparator();
+                case 3 -> new CatAgeComparator();
+                case 4 -> new CatBreedComparator();
+                default -> Comparator.comparing(Cat::getName);
+            };
+        } else {
+            return switch (choice) {
+                case 1 -> Comparator.naturalOrder();
+                case 2 -> new PersonNameComparator();
+                case 3 -> new PersonAgeComparator();
+                case 4 -> new PersonProfessionComparator();
+                default -> Comparator.comparing(Person::getName);
+            };
+        }
     }
 }

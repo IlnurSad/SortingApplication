@@ -7,6 +7,6 @@ import java.util.Comparator;
 public class CatBreedComparator implements Comparator<Cat> {
     @Override
     public int compare(Cat c1, Cat c2) {
-        return c1.getBreed().compareTo(c2.getBreed());
+        return Comparator.comparing(Cat::getBreed).thenComparing(Cat::getName).thenComparing(Cat::getAge).compare(c1, c2);
     }
 }

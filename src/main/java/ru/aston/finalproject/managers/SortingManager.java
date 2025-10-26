@@ -1,28 +1,50 @@
 package ru.aston.finalproject.managers;
 
+import ru.aston.finalproject.entity.Cat;
+import ru.aston.finalproject.entity.Person;
+import ru.aston.finalproject.interfaces.SortingStrategy;
+import ru.aston.finalproject.strategies.sorting.BaseSortingStrategy;
+import ru.aston.finalproject.strategies.sorting.EvenNumberSortingStrategy;
 
-import ru.aston.finalproject.interfaces.SortStrategy;
-
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
-public class SortingManager<T> {
-    private final ExecutorService executor;
-
-    public SortingManager(int threadCount) {
-        this.executor = Executors.newFixedThreadPool(threadCount);
+public class SortingManager {
+    private final Map<Integer, SortingStrategy<Object>> strategyMap = new HashMap<>();
+    private final int selectedStrategy;
+    
+    public SortingManager(int selectedStrategy) {
+        this.selectedStrategy = selectedStrategy;
+        registerStrategies();
     }
-
-    public Future<Void> sortAsync(List<T> list, SortStrategy<T> strategy) {
-        return executor.submit(() -> {
-            strategy.sort(list);
-            return null;
-        });
+    
+    private void registerStrategies() {
+        strategyMap.put(1, new BaseSortingStrategy<>());
+        strategyMap.put(2, new EvenNumberSortingStrategy<>(new BaseSortingStrategy<>(), value -> {
+            if (value instanceof Integer integer) {
+                return integer;
+            }
+            if (value instanceof Person person) {
+                return person.getAge();
+            }
+            if (value instanceof Cat cat) {
+                return cat.getAge();
+            }
+            throw new IllegalArgumentException("Неизвестный тип для сортировки: " + value.getClass());
+        }));
     }
-
-    public void shutdown() {
-        executor.shutdown();
+    
+    @SuppressWarnings("unchecked")
+    public <T> List<T> sort(List<T> list, Comparator<T> comparator, ExecutorService executor) {
+        SortingStrategy<T> strategy = (SortingStrategy<T>) strategyMap.get(selectedStrategy);
+        if (strategy == null) {
+            throw new IllegalArgumentException("Неизвестный тип сортировки: " + selectedStrategy);
+        }
+        return strategy.sort(list, comparator, executor);
     }
 }
+
+
