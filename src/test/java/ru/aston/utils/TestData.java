@@ -1,6 +1,6 @@
 package ru.aston.utils;
 
-import ru.aston.final_project.sorting.entity.Person;
+import ru.aston.finalproject.entity.Person;
 
 import java.util.List;
 
