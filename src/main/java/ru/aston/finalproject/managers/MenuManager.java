@@ -2,12 +2,7 @@ package ru.aston.finalproject.managers;
 
 import ru.aston.finalproject.entity.Cat;
 import ru.aston.finalproject.entity.Person;
-import ru.aston.finalproject.entity.comparators.CatAgeComparator;
-import ru.aston.finalproject.entity.comparators.CatBreedComparator;
-import ru.aston.finalproject.entity.comparators.CatNameComparator;
-import ru.aston.finalproject.entity.comparators.PersonAgeComparator;
-import ru.aston.finalproject.entity.comparators.PersonNameComparator;
-import ru.aston.finalproject.entity.comparators.PersonProfessionComparator;
+import ru.aston.finalproject.entity.comparators.*;
 
 import java.util.Comparator;
 import java.util.Scanner;
