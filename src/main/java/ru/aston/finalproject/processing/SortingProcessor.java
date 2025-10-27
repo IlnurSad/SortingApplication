@@ -8,6 +8,7 @@ import ru.aston.finalproject.managers.MenuManager;
 import ru.aston.finalproject.managers.SearchManager;
 import ru.aston.finalproject.managers.SortingManager;
 import ru.aston.finalproject.binarysearch.SearchUI;
+import ru.aston.finalproject.utils.FileAppender;
 
 import java.util.Comparator;
 import java.util.List;
@@ -23,6 +24,7 @@ public class SortingProcessor {
     private final SearchManager<Cat> catSearchManager;
     private final SearchManager<Person> personSearchManager;
     private final ExecutorService executor;
+    private final FileAppender<Object> fileAppender;
 
     private Comparator<Object> currentCatComparator;
     private Comparator<Object> currentPersonComparator;
@@ -40,6 +42,7 @@ public class SortingProcessor {
         this.personSearchManager = personSearchManager;
         this.searchUI = searchUI;
         this.executor = Executors.newFixedThreadPool(4);
+        this.fileAppender = new FileAppender<>("output.txt");
     }
 
     @SuppressWarnings("unchecked")
@@ -89,6 +92,8 @@ public class SortingProcessor {
             System.out.println("\nОтсортированные данные:");
             printList(data);
 
+            saveSortedData(data);
+
             performSearchWithType(data, entityType);
 
         } catch (Exception e) {
@@ -121,5 +126,10 @@ public class SortingProcessor {
 
     public boolean isValidStrategyType(int strategyType) {
         return strategyType >= 1 && strategyType <= 2;
+    }
+
+    private void saveSortedData(List<Object> sortedData) {
+        fileAppender.appendData(sortedData, Object::toString);
+        System.out.println("Отсортированные данные успешно записаны в файл.");
     }
 }
