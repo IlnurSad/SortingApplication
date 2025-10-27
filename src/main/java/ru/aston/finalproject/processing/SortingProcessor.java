@@ -3,28 +3,43 @@ package ru.aston.finalproject.processing;
 import ru.aston.finalproject.entity.Cat;
 import ru.aston.finalproject.entity.Person;
 import ru.aston.finalproject.interfaces.DataLoader;
-import ru.aston.finalproject.interfaces.SortStrategy;
-import ru.aston.finalproject.managers.*;
+import ru.aston.finalproject.managers.DataLoaderManager;
+import ru.aston.finalproject.managers.MenuManager;
+import ru.aston.finalproject.managers.SearchManager;
+import ru.aston.finalproject.managers.SortingManager;
+import ru.aston.finalproject.binarysearch.SearchUI;
 
+import java.util.Comparator;
 import java.util.List;
-import java.util.concurrent.Future;
+import java.util.Scanner;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class SortingProcessor {
+    public final Scanner scanner;
     private final MenuManager menuManager;
     private final DataLoaderManager dataLoaderManager;
-    private final SortStrategyManager strategyManager;
-    private final SearchManager searchManager;
-    private final SortingManager<Object> sortingManager;
+    private final SearchUI searchUI;
+    private final SearchManager<Cat> catSearchManager;
+    private final SearchManager<Person> personSearchManager;
+    private final ExecutorService executor;
 
-    public SortingProcessor(MenuManager menuManager,
+    private Comparator<Object> currentCatComparator;
+    private Comparator<Object> currentPersonComparator;
+
+    public SortingProcessor(Scanner scanner,
+                            MenuManager menuManager,
                             DataLoaderManager dataLoaderManager,
-                            SortStrategyManager strategyManager,
-                            SearchManager searchManager) {
+                            SearchManager<Cat> catSearchManager,
+                            SearchManager<Person> personSearchManager,
+                            SearchUI searchUI) {
+        this.scanner = scanner;
         this.menuManager = menuManager;
         this.dataLoaderManager = dataLoaderManager;
-        this.strategyManager = strategyManager;
-        this.searchManager = searchManager;
-        this.sortingManager = new SortingManager<>(2);
+        this.catSearchManager = catSearchManager;
+        this.personSearchManager = personSearchManager;
+        this.searchUI = searchUI;
+        this.executor = Executors.newFixedThreadPool(4);
     }
 
     @SuppressWarnings("unchecked")
@@ -38,8 +53,8 @@ public class SortingProcessor {
         }
 
         DataLoader<?> dataLoader = dataLoaderManager.getDataLoader(entityType, loaderType);
-
         List<Object> data = (List<Object>) dataLoader.loadData();
+
         if (data.isEmpty()) {
             System.out.println("Не удалось загрузить данные.");
             return;
@@ -49,20 +64,26 @@ public class SortingProcessor {
         System.out.println("Исходные данные:");
         printList(data);
 
-        menuManager.printSortStrategyMenu(entityType);
+        menuManager.printSortStrategyMenu();
         int strategyType = menuManager.readIntInput("Выберите стратегию: ");
 
-        if (!strategyManager.isValidStrategyType(strategyType)) {
+        if (!isValidStrategyType(strategyType)) {
             System.out.println("Неверный выбор стратегии сортировки.");
             return;
         }
 
-        SortStrategy<Object> sortStrategy = strategyManager.getSortStrategy(entityType, strategyType);
+        Comparator<Object> comparator = menuManager.selectComparator(entityType);
+
+        if (entityType == 1) {
+            currentCatComparator = comparator;
+        } else {
+            currentPersonComparator = comparator;
+        }
 
         try {
             System.out.println("\nСортировка...");
-            Future<Void> future = sortingManager.sortAsync(data, sortStrategy);
-            future.get();
+            SortingManager sortingManager = new SortingManager(strategyType);
+            data = sortingManager.sort(data, comparator, executor);
             System.out.println("Сортировка завершена!");
 
             System.out.println("\nОтсортированные данные:");
@@ -79,20 +100,26 @@ public class SortingProcessor {
     private void performSearchWithType(List<Object> sortedData, int entityType) {
         if (entityType == 1) {
             List<Cat> catList = (List<Cat>) (List<?>) sortedData;
-            searchManager.performCatSearch(catList);
+            if (currentCatComparator != null) {
+                catSearchManager.setBinarySearchStrategy((Comparator<? super Cat>) currentCatComparator);
+            }
+            searchUI.performCatSearch(catSearchManager, catList);
         } else {
             List<Person> personList = (List<Person>) (List<?>) sortedData;
-            searchManager.performPersonSearch(personList);
+            if (currentPersonComparator != null) {
+                personSearchManager.setBinarySearchStrategy((Comparator<? super Person>) currentPersonComparator);
+            }
+            searchUI.performPersonSearch(personSearchManager, personList);
         }
-    }
-
-    public void shutdown() {
-        sortingManager.shutdown();
     }
 
     private void printList(List<Object> list) {
         for (int i = 0; i < list.size(); i++) {
             System.out.println((i + 1) + ". " + list.get(i));
         }
+    }
+
+    public boolean isValidStrategyType(int strategyType) {
+        return strategyType >= 1 && strategyType <= 2;
     }
 }

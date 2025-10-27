@@ -1,95 +1,100 @@
 package ru.aston.finalproject.managers;
 
-import ru.aston.finalproject.entity.Cat;
-import ru.aston.finalproject.entity.Person;
-import ru.aston.finalproject.interfaces.SearchStrategy;
 import ru.aston.finalproject.strategies.search.BinarySearchStrategy;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
-import java.util.Scanner;
+import java.util.concurrent.*;
+import java.util.function.Predicate;
 
-public class SearchManager {
-    private final Scanner scanner;
+public class SearchManager<T> {
+    private BinarySearchStrategy<T> binaryStrategy;
 
-    public SearchManager(Scanner scanner) {
-        this.scanner = scanner;
+    public void setBinarySearchStrategy(Comparator<? super T> comparator) {
+        this.binaryStrategy = new BinarySearchStrategy<>(comparator);
     }
 
-    public void performCatSearch(List<Cat> sortedData) {
-        performSearch(sortedData, 1);
+    public int performBinarySearch(List<? extends T> list, T key) {
+        if (binaryStrategy == null) {
+            throw new IllegalStateException("Binary search strategy not set");
+        }
+        return binaryStrategy.search(list, key);
     }
 
-    public void performPersonSearch(List<Person> sortedData) {
-        performSearch(sortedData, 2);
-    }
+    public List<Integer> findAllOccurrences(List<? extends T> list, Predicate<T> predicate) throws InterruptedException {
+        if (list.isEmpty()) return new ArrayList<>();
 
-    private <T extends Comparable<T>> void performSearch(List<T> sortedData, int entityType) {
-        System.out.print("\nХотите выполнить поиск? (y/n): ");
-        String answer = scanner.nextLine();
+        int numThreads = 4;
+        int chunkSize = Math.max(1, (list.size() + numThreads - 1) / numThreads);
+        List<Callable<List<Integer>>> tasks = new ArrayList<>();
 
-        if (!answer.equalsIgnoreCase("y")) {
-            return;
+        for (int i = 0; i < numThreads; i++) {
+            final int start = i * chunkSize;
+            final int end = Math.min(start + chunkSize, list.size());
+            tasks.add(() -> {
+                List<Integer> indices = new ArrayList<>();
+                for (int j = start; j < end; j++) {
+                    if (predicate.test(list.get(j))) {
+                        indices.add(j);
+                    }
+                }
+                return indices;
+            });
         }
 
-        System.out.println("Введите данные для поиска:");
+        ExecutorService executor = Executors.newFixedThreadPool(numThreads);
+        List<Future<List<Integer>>> results = executor.invokeAll(tasks);
+
+        List<Integer> allIndices = new ArrayList<>();
         try {
-            @SuppressWarnings("unchecked")
-            T searchKey = (T) createSearchKey(entityType);
-
-            SearchStrategy<T> searchStrategy = new BinarySearchStrategy<>();
-            int index = searchStrategy.search(sortedData, searchKey);
-
-            if (index != -1) {
-                System.out.println("Элемент найден на позиции: " + index);
-                System.out.println("Найденный элемент: " + sortedData.get(index));
-            } else {
-                System.out.println("Элемент не найден.");
+            for (Future<List<Integer>> future : results) {
+                allIndices.addAll(future.get());
             }
-
-        } catch (Exception e) {
-            System.out.println("Ошибка ввода данных для поиска: " + e.getMessage());
+        } catch (ExecutionException e) {
+            throw new RuntimeException("Error during search", e);
+        } finally {
+            executor.shutdown();
         }
+
+        return allIndices;
     }
 
-    private Object createSearchKey(int entityType) {
-        if (entityType == 1) {
-            return createCatSearchKey();
-        } else {
-            return createPersonSearchKey();
+    public int countExactOccurrences(List<? extends T> list, T key) throws InterruptedException {
+        if (list.isEmpty()) return 0;
+
+        int numThreads = 4;
+        int chunkSize = Math.max(1, (list.size() + numThreads - 1) / numThreads);
+        List<Callable<Integer>> tasks = new ArrayList<>();
+
+        for (int i = 0; i < numThreads; i++) {
+            final int start = i * chunkSize;
+            final int end = Math.min(start + chunkSize, list.size());
+            tasks.add(() -> {
+                int count = 0;
+                for (int j = start; j < end; j++) {
+                    if (list.get(j).equals(key)) {
+                        count++;
+                    }
+                }
+                return count;
+            });
         }
-    }
 
-    private Cat createCatSearchKey() {
-        System.out.print("Имя: ");
-        String name = scanner.nextLine();
+        ExecutorService executor = Executors.newFixedThreadPool(numThreads);
+        List<Future<Integer>> results = executor.invokeAll(tasks);
 
-        System.out.print("Возраст: ");
-        int age = Integer.parseInt(scanner.nextLine());
+        int totalCount = 0;
+        try {
+            for (Future<Integer> future : results) {
+                totalCount += future.get();
+            }
+        } catch (ExecutionException e) {
+            throw new RuntimeException("Error during counting", e);
+        } finally {
+            executor.shutdown();
+        }
 
-        System.out.print("Порода: ");
-        String breed = scanner.nextLine();
-
-        return Cat.builder()
-                .setName(name)
-                .setAge(age)
-                .setBreed(breed)
-                .build();
-    }
-
-    private Person createPersonSearchKey() {
-        System.out.print("Имя: ");
-        String name = scanner.nextLine();
-
-        System.out.print("Возраст: ");
-        int age = Integer.parseInt(scanner.nextLine());
-
-        System.out.print("Профессия: ");
-        String profession = scanner.nextLine();
-
-        return Person.builder()
-                .setName(name)
-                .setAge(age)
-                .setProfession(profession)
-                .build();
+        return totalCount;
     }
 }

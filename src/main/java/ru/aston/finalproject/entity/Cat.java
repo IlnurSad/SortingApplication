@@ -23,7 +23,15 @@ public class Cat implements Comparable<Cat> {
 
     @Override
     public int compareTo(Cat other) {
-        return this.name.compareTo(other.name);
+        int result = this.name.compareTo(other.name);
+        if (result != 0) {
+            return result;
+        }
+        result = Integer.compare(this.age, other.age);
+        if (result != 0) {
+            return result;
+        }
+        return this.breed.compareTo(other.breed);
     }
 
     @Override

@@ -1,9 +1,11 @@
 package ru.aston.finalproject;
 
+import ru.aston.finalproject.binarysearch.SearchUI;
+import ru.aston.finalproject.entity.Cat;
+import ru.aston.finalproject.entity.Person;
 import ru.aston.finalproject.managers.DataLoaderManager;
 import ru.aston.finalproject.managers.MenuManager;
 import ru.aston.finalproject.managers.SearchManager;
-import ru.aston.finalproject.managers.SortStrategyManager;
 import ru.aston.finalproject.processing.SortingProcessor;
 
 import java.util.Scanner;
@@ -12,17 +14,26 @@ public class SortingApplication {
     private final Scanner scanner;
     private final MenuManager menuManager;
     private final DataLoaderManager dataLoaderManager;
-    private final SortStrategyManager strategyManager;
-    private final SearchManager searchManager;
+    private final SearchManager<Cat> catSearchManager;
+    private final SearchManager<Person> personSearchManager;
+    private final SearchUI searchUI;
     private final SortingProcessor sortingProcessor;
 
     public SortingApplication() {
         this.scanner = new Scanner(System.in);
         this.menuManager = new MenuManager(scanner);
         this.dataLoaderManager = new DataLoaderManager(scanner);
-        this.strategyManager = new SortStrategyManager();
-        this.searchManager = new SearchManager(scanner);
-        this.sortingProcessor = new SortingProcessor(menuManager, dataLoaderManager, strategyManager, searchManager);
+        this.catSearchManager = new SearchManager<>();
+        this.personSearchManager = new SearchManager<>();
+        this.searchUI = new SearchUI(scanner);
+        this.sortingProcessor = new SortingProcessor(
+                scanner,
+                menuManager,
+                dataLoaderManager,
+                catSearchManager,
+                personSearchManager,
+                searchUI
+        );
     }
 
     public void run() {
@@ -60,7 +71,6 @@ public class SortingApplication {
 
     private void shutdown() {
         System.out.println("Выход из программы...");
-        sortingProcessor.shutdown();
         scanner.close();
     }
 
