@@ -11,13 +11,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class SortingManager {
     private final Map<Integer, SortingStrategy<Object>> strategyMap = new HashMap<>();
     private final int selectedStrategy;
+    private final ExecutorService executor;
     
     public SortingManager(int selectedStrategy) {
         this.selectedStrategy = selectedStrategy;
+        this.executor = Executors.newFixedThreadPool(4);
         registerStrategies();
     }
     
@@ -38,7 +41,7 @@ public class SortingManager {
     }
     
     @SuppressWarnings("unchecked")
-    public <T> List<T> sort(List<T> list, Comparator<T> comparator, ExecutorService executor) {
+    public <T> List<T> sort(List<T> list, Comparator<T> comparator) {
         SortingStrategy<T> strategy = (SortingStrategy<T>) strategyMap.get(selectedStrategy);
         if (strategy == null) {
             throw new IllegalArgumentException("Неизвестный тип сортировки: " + selectedStrategy);

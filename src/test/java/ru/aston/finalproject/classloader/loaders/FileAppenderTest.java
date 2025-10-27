@@ -1,16 +1,18 @@
 package ru.aston.finalproject.classloader.loaders;
 
-import org.junit.*;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.jupiter.api.Test;
 import ru.aston.finalproject.utils.FileAppender;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class FileAppenderTest {
 
