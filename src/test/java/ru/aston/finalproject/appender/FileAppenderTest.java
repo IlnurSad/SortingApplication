@@ -1,9 +1,9 @@
-package ru.aston.finalproject.classloader.loaders;
+package ru.aston.finalproject.appender;
 
-import org.junit.After;
-import org.junit.Before;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import ru.aston.finalproject.utils.FileAppender;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -19,7 +19,7 @@ public class FileAppenderTest {
     private static final String TEST_FILE_PATH = "test_output.txt";
     private FileAppender<Object> fileAppender;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         File testFile = new File(TEST_FILE_PATH);
         if (testFile.exists()) {
@@ -29,7 +29,7 @@ public class FileAppenderTest {
         fileAppender = new FileAppender<>(TEST_FILE_PATH);
     }
 
-    @After
+    @AfterEach
     public void tearDown() {
         File testFile = new File(TEST_FILE_PATH);
         if (testFile.exists()) {

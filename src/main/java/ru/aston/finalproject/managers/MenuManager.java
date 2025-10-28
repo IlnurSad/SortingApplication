@@ -45,11 +45,6 @@ public class MenuManager {
         }
     }
 
-    public String readStringInput(String prompt) {
-        System.out.print(prompt);
-        return scanner.nextLine();
-    }
-
     public boolean askYesNo(String question) {
         System.out.print(question + " (y/n): ");
         String answer = scanner.nextLine();

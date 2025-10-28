@@ -61,12 +61,12 @@ public class SortingApplication {
 
     private void processCatSorting() {
         System.out.println("\n=== Работа с котами ===");
-        sortingProcessor.processSorting(1, "котов");
+        sortingProcessor.processSorting(1);
     }
 
     private void processPersonSorting() {
         System.out.println("\n=== Работа с людьми ===");
-        sortingProcessor.processSorting(2, "человек");
+        sortingProcessor.processSorting(2);
     }
 
     private void shutdown() {

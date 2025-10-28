@@ -1,4 +1,4 @@
-package ru.aston.finalproject.utils;
+package ru.aston.finalproject.appender;
 
 import java.io.FileWriter;
 import java.io.IOException;

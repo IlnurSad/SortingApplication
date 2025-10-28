@@ -8,15 +8,14 @@ import ru.aston.finalproject.managers.MenuManager;
 import ru.aston.finalproject.managers.SearchManager;
 import ru.aston.finalproject.managers.SortingManager;
 import ru.aston.finalproject.binarysearch.SearchUI;
-import ru.aston.finalproject.utils.FileAppender;
+import ru.aston.finalproject.appender.FileAppender;
 
 import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class SortingProcessor {
+    private static final String OUTPUT_FILE_PATH = "src/main/resources/output.txt";
     public final Scanner scanner;
     private final MenuManager menuManager;
     private final DataLoaderManager dataLoaderManager;
@@ -36,11 +35,11 @@ public class SortingProcessor {
         this.catSearchManager = catSearchManager;
         this.personSearchManager = personSearchManager;
         this.searchUI = searchUI;
-        this.fileAppender = new FileAppender<>("output.txt");
+        this.fileAppender = new FileAppender<>(OUTPUT_FILE_PATH);
     }
     
     @SuppressWarnings("unchecked")
-    public void processSorting(int entityType, String entityName) {
+    public void processSorting(int entityType) {
         menuManager.printDataLoaderMenu();
         int loaderType = menuManager.readIntInput("Выберите способ: ");
         
