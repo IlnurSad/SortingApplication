@@ -15,7 +15,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class FileAppenderTest {
-
     private static final String TEST_FILE_PATH = "test_output.txt";
     private FileAppender<Object> fileAppender;
 
