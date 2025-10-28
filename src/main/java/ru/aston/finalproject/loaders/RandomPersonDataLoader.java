@@ -38,6 +38,6 @@ public class RandomPersonDataLoader implements DataLoader<Person> {
     }
 
     private int getRandomSize() {
-        return 5 + random.nextInt(20);
+        return 30 + random.nextInt(50);
     }
 }

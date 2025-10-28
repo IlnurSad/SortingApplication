@@ -5,7 +5,7 @@ import ru.aston.finalproject.interfaces.SortingStrategy;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
+import java.util.concurrent.ForkJoinPool;
 import java.util.function.ToIntFunction;
 
 public class EvenNumberSortingStrategy<T> implements SortingStrategy<T> {
@@ -18,7 +18,7 @@ public class EvenNumberSortingStrategy<T> implements SortingStrategy<T> {
     }
     
     @Override
-    public List<T> sort(List<T> list, Comparator<T> comparator, ExecutorService executor) {
+    public List<T> sort(List<T> list, Comparator<T> comparator, ForkJoinPool executor) {
         if (list == null || list.isEmpty() || list.size() == 1) {
             return list;
         }

@@ -10,15 +10,14 @@ import ru.aston.utils.TestData;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.ForkJoinPool;
 
 class BaseSortingStrategyTest {
-    private ExecutorService executor;
+    private ForkJoinPool executor;
     
     @BeforeEach
     void setUp() {
-        executor = Executors.newFixedThreadPool(4);
+        executor = new ForkJoinPool(4);
     }
     
     @AfterEach

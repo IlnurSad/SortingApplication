@@ -10,18 +10,17 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.ForkJoinPool;
 
 public class SortingManager {
     private static final int NUM_THREADS = 4;
     private final Map<Integer, SortingStrategy<Object>> strategyMap = new HashMap<>();
     private final int selectedStrategy;
-    private final ExecutorService executor;
+    private final ForkJoinPool executor;
     
     public SortingManager(int selectedStrategy) {
         this.selectedStrategy = selectedStrategy;
-        this.executor = Executors.newFixedThreadPool(NUM_THREADS);
+        this.executor = new ForkJoinPool(NUM_THREADS);
         registerStrategies();
     }
     

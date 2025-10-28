@@ -1,15 +1,14 @@
 package ru.aston.finalproject.binarysearch;
 
+import ru.aston.finalproject.appender.FileAppender;
 import ru.aston.finalproject.entity.Cat;
 import ru.aston.finalproject.entity.Person;
-import ru.aston.finalproject.managers.SearchManager;
 import ru.aston.finalproject.managers.MenuManager;
-import ru.aston.finalproject.utils.FileAppender;
-
+import ru.aston.finalproject.managers.SearchManager;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import java.util.concurrent.*;
+
 
 public class SearchUI {
     private Scanner scanner;
