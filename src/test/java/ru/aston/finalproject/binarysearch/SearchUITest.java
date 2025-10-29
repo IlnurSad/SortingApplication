@@ -200,21 +200,18 @@ class SearchUITest {
     @Test
     void displaySearchResults_WithEmptyPositions_ShouldShowNoResultsMessage() throws Exception {
         List<Integer> emptyPositions = Collections.emptyList();
-        String searchType = "по тесту";
 
-        invokeDisplaySearchResults(testCats, emptyPositions, searchType);
+        invokeDisplaySearchResults(testCats, emptyPositions);
 
-        assertOutputContains("Совпадений не найдено по тесту");
+        assertOutputContains("Совпадений не найдено");
     }
 
     @Test
     void displaySearchResults_WithSinglePosition_ShouldShowSingleResult() throws Exception {
         List<Integer> positions = Arrays.asList(1);
-        String searchType = "по тесту";
 
-        invokeDisplaySearchResults(testCats, positions, searchType);
+        invokeDisplaySearchResults(testCats, positions);
 
-        assertOutputContains("Найдено 1 совпадений по тесту");
         assertOutputContains("Позиции в списке: [2]");
         assertOutputContains("На позиции 2:");
     }
@@ -222,22 +219,18 @@ class SearchUITest {
     @Test
     void displaySearchResults_WithMultiplePositions_ShouldShowAllResults() throws Exception {
         List<Integer> positions = Arrays.asList(0, 2);
-        String searchType = "по тесту";
 
-        invokeDisplaySearchResults(testCats, positions, searchType);
+        invokeDisplaySearchResults(testCats, positions);
 
-        assertOutputContains("Найдено 2 совпадений по тесту");
         assertOutputContains("Позиции в списке: [1, 3]");
     }
 
     @Test
     void displaySearchResults_WithPersonObjects_ShouldShowCorrectResults() throws Exception {
         List<Integer> positions = Arrays.asList(0, 2);
-        String searchType = "по имени";
 
-        invokeDisplaySearchResults(testPersons, positions, searchType);
+        invokeDisplaySearchResults(testPersons, positions);
 
-        assertOutputContains("Найдено 2 совпадений по имени");
         assertOutputContains("Позиции в списке: [1, 3]");
     }
 
@@ -307,11 +300,11 @@ class SearchUITest {
         assertOutputContains("Ошибка поиска");
     }
 
-    private <T> void invokeDisplaySearchResults(List<T> list, List<Integer> positions, String searchType) throws Exception {
+    private <T> void invokeDisplaySearchResults(List<T> list, List<Integer> positions) throws Exception {
         SearchUI tempSearchUI = new SearchUI(new Scanner(new ByteArrayInputStream("".getBytes())));
-        Method method = SearchUI.class.getDeclaredMethod("displaySearchResults", List.class, List.class, String.class);
+        Method method = SearchUI.class.getDeclaredMethod("displaySearchResults", List.class, List.class);
         method.setAccessible(true);
-        method.invoke(tempSearchUI, list, positions, searchType);
+        method.invoke(tempSearchUI, list, positions);
     }
 
     private void invokePerformExactSearchWithThreads(SearchManager<Cat> manager, List<Cat> cats, Cat searchCat) throws Exception {

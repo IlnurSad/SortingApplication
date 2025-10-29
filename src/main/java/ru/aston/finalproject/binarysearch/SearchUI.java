@@ -1,20 +1,29 @@
 package ru.aston.finalproject.binarysearch;
 
-import ru.aston.finalproject.appender.FileAppender;
 import ru.aston.finalproject.entity.Cat;
 import ru.aston.finalproject.entity.Person;
 import ru.aston.finalproject.managers.MenuManager;
 import ru.aston.finalproject.managers.SearchManager;
+import ru.aston.finalproject.interfaces.SearchResultListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-
 public class SearchUI {
-    private final Scanner scanner;
+    private Scanner scanner;
+    private SearchResultListener searchResultListener;
 
     public SearchUI(Scanner scanner) {
         this.scanner = scanner;
+    }
+
+    public SearchUI(Scanner scanner, SearchResultListener listener) {
+        this.scanner = scanner;
+        this.searchResultListener = listener;
+    }
+
+    public void setSearchResultListener(SearchResultListener listener) {
+        this.searchResultListener = listener;
     }
 
     public void performCatSearch(SearchManager<Cat> catManager, List<Cat> cats) {
@@ -79,7 +88,7 @@ public class SearchUI {
         try {
             List<Integer> positions = catManager.findAllOccurrences(cats,
                     cat -> cat.getName().equals(name));
-            displaySearchResults(cats, positions);
+            displaySearchResults(cats, positions, "Коты");
         } catch (Exception e) {
             System.out.println("Ошибка при выполнении поиска: " + e.getMessage());
         }
@@ -93,7 +102,7 @@ public class SearchUI {
         try {
             List<Integer> positions = catManager.findAllOccurrences(cats,
                     cat -> cat.getAge() == age);
-            displaySearchResults(cats, positions);
+            displaySearchResults(cats, positions, "Коты");
         } catch (Exception e) {
             System.out.println("Ошибка при выполнении поиска: " + e.getMessage());
         }
@@ -106,7 +115,7 @@ public class SearchUI {
         try {
             List<Integer> positions = catManager.findAllOccurrences(cats,
                     cat -> cat.getBreed().equals(breed));
-            displaySearchResults(cats, positions);
+            displaySearchResults(cats, positions, "Коты");
         } catch (Exception e) {
             System.out.println("Ошибка при выполнении поиска: " + e.getMessage());
         }
@@ -124,7 +133,7 @@ public class SearchUI {
                     }
                 }
 
-                displaySearchResults(cats, positions);
+                displaySearchResults(cats, positions, "Коты");
 
                 int occurrences = catManager.countExactOccurrences(cats, searchCat);
                 System.out.println("Найдено точных совпадений: " + occurrences);
@@ -198,7 +207,7 @@ public class SearchUI {
         try {
             List<Integer> positions = personManager.findAllOccurrences(persons,
                     person -> person.getName().equals(name));
-            displaySearchResults(persons, positions);
+            displaySearchResults(persons, positions, "Люди");
         } catch (Exception e) {
             System.out.println("Ошибка при выполнении поиска: " + e.getMessage());
         }
@@ -212,7 +221,7 @@ public class SearchUI {
         try {
             List<Integer> positions = personManager.findAllOccurrences(persons,
                     person -> person.getAge() == age);
-            displaySearchResults(persons, positions);
+            displaySearchResults(persons, positions, "Люди");
         } catch (Exception e) {
             System.out.println("Ошибка при выполнении поиска: " + e.getMessage());
         }
@@ -225,7 +234,7 @@ public class SearchUI {
         try {
             List<Integer> positions = personManager.findAllOccurrences(persons,
                     person -> person.getProfession().equals(profession));
-            displaySearchResults(persons, positions);
+            displaySearchResults(persons, positions, "Люди");
         } catch (Exception e) {
             System.out.println("Ошибка при выполнении поиска: " + e.getMessage());
         }
@@ -243,7 +252,7 @@ public class SearchUI {
                     }
                 }
 
-                displaySearchResults(persons, positions);
+                displaySearchResults(persons, positions, "Люди");
 
                 int occurrences = personManager.countExactOccurrences(persons, searchPerson);
                 System.out.println("Найдено точных совпадений: " + occurrences);
@@ -255,31 +264,12 @@ public class SearchUI {
         }
     }
 
-    private <T> void writeSearchResultsToFile(List<T> list, List<Integer> positions, String filePath) {
-        FileAppender<String> fileAppender = new FileAppender<>(filePath);
-
-        fileAppender.appendValue("\nРезультаты поиска:", s -> s);
-
-        if (positions.isEmpty()) {
-            fileAppender.appendValue("Совпадений не найдено", s -> s);
-        } else {
-            List<Integer> userPositions = new ArrayList<>();
-            for (int index : positions) {
-                userPositions.add(index + 1);
-            }
-
-            fileAppender.appendValue("Позиции в списке: " + userPositions, s -> s);
-
-            for (int index : positions) {
-                String result = "На позиции " + (index + 1) + ": " + list.get(index);
-                fileAppender.appendValue(result, s -> s);
-            }
-        }
-    }
-
-    private <T> void displaySearchResults(List<T> list, List<Integer> positions) {
+    private <T> void displaySearchResults(List<T> list, List<Integer> positions, String entityType) {
         if (positions.isEmpty()) {
             System.out.println("Совпадений не найдено");
+            if (searchResultListener != null) {
+                searchResultListener.onSearchResults(list, positions, entityType);
+            }
         } else {
             List<Integer> userPositions = new ArrayList<>();
             for (int index : positions) {
@@ -291,7 +281,9 @@ public class SearchUI {
                 System.out.println("На позиции " + (index + 1) + ": " + list.get(index));
             }
 
-            writeSearchResultsToFile(list, positions, "output.txt");
+            if (searchResultListener != null) {
+                searchResultListener.onSearchResults(list, positions, entityType);
+            }
         }
     }
 }
