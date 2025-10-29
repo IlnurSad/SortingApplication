@@ -11,7 +11,7 @@ import java.util.Scanner;
 
 
 public class SearchUI {
-    private Scanner scanner;
+    private final Scanner scanner;
 
     public SearchUI(Scanner scanner) {
         this.scanner = scanner;
