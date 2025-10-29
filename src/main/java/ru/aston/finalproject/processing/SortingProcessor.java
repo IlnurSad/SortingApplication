@@ -36,7 +36,6 @@ public class SortingProcessor implements SearchResultListener {
         this.catSearchManager = catSearchManager;
         this.personSearchManager = personSearchManager;
         this.fileAppender = new FileAppender<>(OUTPUT_FILE_PATH);
-
         this.searchUI = new SearchUI(scanner, this);
     }
 

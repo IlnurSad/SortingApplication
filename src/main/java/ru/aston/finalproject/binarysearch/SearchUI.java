@@ -22,10 +22,6 @@ public class SearchUI {
         this.searchResultListener = listener;
     }
 
-    public void setSearchResultListener(SearchResultListener listener) {
-        this.searchResultListener = listener;
-    }
-
     public void performCatSearch(SearchManager<Cat> catManager, List<Cat> cats) {
         MenuManager menuManager = new MenuManager(scanner);
 
