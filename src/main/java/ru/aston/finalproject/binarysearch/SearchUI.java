@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class SearchUI {
-    private Scanner scanner;
+    private final Scanner scanner;
     private SearchResultListener searchResultListener;
 
     public SearchUI(Scanner scanner) {
