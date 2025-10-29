@@ -1,6 +1,5 @@
 package ru.aston.finalproject;
 
-import ru.aston.finalproject.binarysearch.SearchUI;
 import ru.aston.finalproject.entity.Cat;
 import ru.aston.finalproject.entity.Person;
 import ru.aston.finalproject.managers.DataLoaderManager;
@@ -16,7 +15,6 @@ public class SortingApplication {
     private final DataLoaderManager dataLoaderManager;
     private final SearchManager<Cat> catSearchManager;
     private final SearchManager<Person> personSearchManager;
-    private final SearchUI searchUI;
     private final SortingProcessor sortingProcessor;
 
     public SortingApplication() {
@@ -25,7 +23,6 @@ public class SortingApplication {
         this.dataLoaderManager = new DataLoaderManager(scanner);
         this.catSearchManager = new SearchManager<>();
         this.personSearchManager = new SearchManager<>();
-        this.searchUI = new SearchUI(scanner);
         this.sortingProcessor = new SortingProcessor(
                 scanner,
                 menuManager,
