@@ -138,6 +138,11 @@ class SearchUITest {
             }
             return findAllOccurrencesResult != null ? findAllOccurrencesResult : Collections.emptyList();
         }
+
+        @Override
+        public void setBinarySearchStrategy(java.util.Comparator<? super Person> comparator) {
+            // No-op for tests
+        }
     }
 
     private void assertOutputContains(String expected) {
