@@ -17,13 +17,11 @@ public class SearchUI {
         this.scanner = scanner;
     }
 
-    // Конструктор с listener для передачи результатов
     public SearchUI(Scanner scanner, SearchResultListener listener) {
         this.scanner = scanner;
         this.searchResultListener = listener;
     }
 
-    // Устанавливаем listener
     public void setSearchResultListener(SearchResultListener listener) {
         this.searchResultListener = listener;
     }
