@@ -10,14 +10,17 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutorService;
+import java.util.concurrent.ForkJoinPool;
 
 public class SortingManager {
+    private static final int NUM_THREADS = 4;
     private final Map<Integer, SortingStrategy<Object>> strategyMap = new HashMap<>();
     private final int selectedStrategy;
+    private final ForkJoinPool executor;
     
     public SortingManager(int selectedStrategy) {
         this.selectedStrategy = selectedStrategy;
+        this.executor = new ForkJoinPool(NUM_THREADS);
         registerStrategies();
     }
     
@@ -38,7 +41,7 @@ public class SortingManager {
     }
     
     @SuppressWarnings("unchecked")
-    public <T> List<T> sort(List<T> list, Comparator<T> comparator, ExecutorService executor) {
+    public <T> List<T> sort(List<T> list, Comparator<T> comparator) {
         SortingStrategy<T> strategy = (SortingStrategy<T>) strategyMap.get(selectedStrategy);
         if (strategy == null) {
             throw new IllegalArgumentException("Неизвестный тип сортировки: " + selectedStrategy);

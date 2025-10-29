@@ -45,11 +45,6 @@ public class MenuManager {
         }
     }
 
-    public String readStringInput(String prompt) {
-        System.out.print(prompt);
-        return scanner.nextLine();
-    }
-
     public boolean askYesNo(String question) {
         System.out.print(question + " (y/n): ");
         String answer = scanner.nextLine();
@@ -58,27 +53,24 @@ public class MenuManager {
     
     public Comparator selectComparator(int entityType) {
         System.out.println("\n=== Выберите поле для сортировки ===");
-        System.out.println("1. Natural order (как определено в классе compareTo)");
-        System.out.println("2. По имени");
-        System.out.println("3. По возрасту");
-        System.out.println("4. По дополнительному полю");
+        System.out.println("1. По умолчанию (по имени)");
+        System.out.println("2. По возрасту");
+        System.out.println("3. По дополнительному полю");
         
         int choice = readIntInput("Ваш выбор: ");
         
         if (entityType == 1) {
             return switch (choice) {
                 case 1 -> Comparator.naturalOrder();
-                case 2 -> new CatNameComparator();
-                case 3 -> new CatAgeComparator();
-                case 4 -> new CatBreedComparator();
+                case 2-> new CatAgeComparator();
+                case 3-> new CatBreedComparator();
                 default -> Comparator.comparing(Cat::getName);
             };
         } else {
             return switch (choice) {
                 case 1 -> Comparator.naturalOrder();
-                case 2 -> new PersonNameComparator();
-                case 3 -> new PersonAgeComparator();
-                case 4 -> new PersonProfessionComparator();
+                case 2 -> new PersonAgeComparator();
+                case 3 -> new PersonProfessionComparator();
                 default -> Comparator.comparing(Person::getName);
             };
         }

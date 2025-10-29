@@ -1,14 +1,14 @@
 package ru.aston.finalproject.binarysearch;
 
+import ru.aston.finalproject.appender.FileAppender;
 import ru.aston.finalproject.entity.Cat;
 import ru.aston.finalproject.entity.Person;
-import ru.aston.finalproject.managers.SearchManager;
 import ru.aston.finalproject.managers.MenuManager;
-
+import ru.aston.finalproject.managers.SearchManager;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import java.util.concurrent.*;
+
 
 public class SearchUI {
     private Scanner scanner;
@@ -255,6 +255,28 @@ public class SearchUI {
         }
     }
 
+    private <T> void writeSearchResultsToFile(List<T> list, List<Integer> positions, String filePath) {
+        FileAppender<String> fileAppender = new FileAppender<>(filePath);
+
+        fileAppender.appendValue("\nРезультаты поиска:", s -> s);
+
+        if (positions.isEmpty()) {
+            fileAppender.appendValue("Совпадений не найдено", s -> s);
+        } else {
+            List<Integer> userPositions = new ArrayList<>();
+            for (int index : positions) {
+                userPositions.add(index + 1);
+            }
+
+            fileAppender.appendValue("Позиции в списке: " + userPositions, s -> s);
+
+            for (int index : positions) {
+                String result = "На позиции " + (index + 1) + ": " + list.get(index);
+                fileAppender.appendValue(result, s -> s);
+            }
+        }
+    }
+
     private <T> void displaySearchResults(List<T> list, List<Integer> positions) {
         if (positions.isEmpty()) {
             System.out.println("Совпадений не найдено");
@@ -268,6 +290,8 @@ public class SearchUI {
             for (int index : positions) {
                 System.out.println("На позиции " + (index + 1) + ": " + list.get(index));
             }
+
+            writeSearchResultsToFile(list, positions, "output.txt");
         }
     }
 }

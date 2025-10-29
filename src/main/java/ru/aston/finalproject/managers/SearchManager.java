@@ -9,6 +9,7 @@ import java.util.concurrent.*;
 import java.util.function.Predicate;
 
 public class SearchManager<T> {
+    private static final int NUM_THREADS = 4;
     private BinarySearchStrategy<T> binaryStrategy;
 
     public void setBinarySearchStrategy(Comparator<? super T> comparator) {
@@ -25,11 +26,10 @@ public class SearchManager<T> {
     public List<Integer> findAllOccurrences(List<? extends T> list, Predicate<T> predicate) throws InterruptedException {
         if (list.isEmpty()) return new ArrayList<>();
 
-        int numThreads = 4;
-        int chunkSize = Math.max(1, (list.size() + numThreads - 1) / numThreads);
+        int chunkSize = Math.max(1, (list.size() + NUM_THREADS - 1) / NUM_THREADS);
         List<Callable<List<Integer>>> tasks = new ArrayList<>();
 
-        for (int i = 0; i < numThreads; i++) {
+        for (int i = 0; i < NUM_THREADS; i++) {
             final int start = i * chunkSize;
             final int end = Math.min(start + chunkSize, list.size());
             tasks.add(() -> {
@@ -43,7 +43,7 @@ public class SearchManager<T> {
             });
         }
 
-        ExecutorService executor = Executors.newFixedThreadPool(numThreads);
+        ExecutorService executor = Executors.newFixedThreadPool(NUM_THREADS);
         List<Future<List<Integer>>> results = executor.invokeAll(tasks);
 
         List<Integer> allIndices = new ArrayList<>();

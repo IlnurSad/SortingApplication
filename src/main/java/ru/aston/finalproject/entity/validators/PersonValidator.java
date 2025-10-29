@@ -9,8 +9,8 @@ public class PersonValidator implements Validator<Person> {
         return person != null &&
                 person.getName() != null &&
                 !person.getName().trim().isEmpty() &&
-                person.getAge() >= 0 &&
-                person.getAge() <= 130 &&
+                person.getAge() >= 18 &&
+                person.getAge() <= 80 &&
                 person.getProfession() != null &&
                 !person.getProfession().trim().isEmpty();
     }

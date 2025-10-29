@@ -12,6 +12,7 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class FileCatDataLoader implements DataLoader<Cat> {
     private final Validator<Cat> validator;
@@ -26,17 +27,17 @@ public class FileCatDataLoader implements DataLoader<Cat> {
     public List<Cat> loadData() {
         System.out.print("Введите путь к файлу с данными котов: ");
         String filePath = scanner.nextLine().trim();
-
+        Stream<String> stream = Stream.empty();
         try {
             Path path = Paths.get(filePath);
             if (!Files.exists(path)) {
                 System.out.println("Файл не существует: " + filePath);
                 return List.of();
             }
+            stream = Files.lines(path);
+            List<String> lines = stream.toList();
 
-            List<String> lines = Files.lines(path).collect(Collectors.toList());
-
-            if (lines.isEmpty() || !containsCat(lines.get(0))) {
+            if (lines.isEmpty() || !containsCat(lines.getFirst())) {
                 System.out.println("Файл не содержит данных котов");
                 return List.of();
             }
@@ -52,6 +53,8 @@ public class FileCatDataLoader implements DataLoader<Cat> {
         } catch (IOException e) {
             System.out.println("Ошибка чтения файла: " + e.getMessage());
             return List.of();
+        } finally {
+            stream.close();;
         }
     }
 

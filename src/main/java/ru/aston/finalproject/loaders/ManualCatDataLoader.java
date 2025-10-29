@@ -7,6 +7,8 @@ import ru.aston.finalproject.interfaces.Validator;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class ManualCatDataLoader implements DataLoader<Cat> {
     private final Scanner scanner;
@@ -20,15 +22,14 @@ public class ManualCatDataLoader implements DataLoader<Cat> {
     @Override
     public List<Cat> loadData() {
         int size = getSizeInput();
-        List<Cat> data = new ArrayList<>();
         System.out.println("Введите данные для " + size + " котов:");
 
-        for (int i = 0; i < size; i++) {
-            System.out.println("Кот " + (i + 1) + ":");
-            data.add(readValidCat());
-        }
-
-        return data;
+        return IntStream.range(0, size)
+                .mapToObj(i -> {
+                    System.out.println("Кот " + (i + 1) + ":");
+                    return readValidCat();
+                })
+                .collect(Collectors.toList());
     }
 
     private int getSizeInput() {

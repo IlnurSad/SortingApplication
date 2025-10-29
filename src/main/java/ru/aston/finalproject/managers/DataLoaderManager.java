@@ -23,13 +23,13 @@ public class DataLoaderManager {
 
         Map<Integer, DataLoader<?>> catLoaders = new HashMap<>();
         catLoaders.put(1, new FileCatDataLoader(new CatValidator(), scanner));
-        catLoaders.put(2, new RandomCatDataLoader(new CatValidator()));
+        catLoaders.put(2, new RandomCatDataLoader());
         catLoaders.put(3, new ManualCatDataLoader(scanner, new CatValidator()));
         loadersMap.put(1, catLoaders);
 
         Map<Integer, DataLoader<?>> personLoaders = new HashMap<>();
         personLoaders.put(1, new FilePersonDataLoader(new PersonValidator(), scanner));
-        personLoaders.put(2, new RandomPersonDataLoader(new PersonValidator()));
+        personLoaders.put(2, new RandomPersonDataLoader());
         personLoaders.put(3, new ManualPersonDataLoader(scanner, new PersonValidator()));
         loadersMap.put(2, personLoaders);
 

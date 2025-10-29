@@ -9,7 +9,7 @@ public class CatValidator implements Validator<Cat> {
         return cat != null &&
                 cat.getName() != null &&
                 !cat.getName().trim().isEmpty() &&
-                cat.getAge() >= 0 &&
+                cat.getAge() >= 1 &&
                 cat.getAge() <= 30 &&
                 cat.getBreed() != null &&
                 !cat.getBreed().trim().isEmpty();

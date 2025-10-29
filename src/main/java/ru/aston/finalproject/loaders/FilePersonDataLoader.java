@@ -11,6 +11,7 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class FilePersonDataLoader implements DataLoader<Person> {
     private final Validator<Person> validator;
@@ -25,7 +26,7 @@ public class FilePersonDataLoader implements DataLoader<Person> {
     public List<Person> loadData() {
         System.out.print("Введите путь к файлу с данными людей: ");
         String filePath = scanner.nextLine().trim();
-
+        Stream<String> stream = Stream.empty();
         try {
             Path path = Paths.get(filePath);
             if (!Files.exists(path)) {
@@ -33,9 +34,10 @@ public class FilePersonDataLoader implements DataLoader<Person> {
                 return List.of();
             }
 
-            List<String> lines = Files.lines(path).collect(Collectors.toList());
+            stream = Files.lines(path);
+            List<String> lines = stream.toList();
 
-            if (lines.isEmpty() || !containsPerson(lines.get(0))) {
+            if (lines.isEmpty() || !containsPerson(lines.getFirst())) {
                 System.out.println("Файл не содержит данных людей");
                 return List.of();
             }
@@ -51,6 +53,8 @@ public class FilePersonDataLoader implements DataLoader<Person> {
         } catch (IOException e) {
             System.out.println("Ошибка чтения файла: " + e.getMessage());
             return List.of();
+        } finally {
+            stream.close();;
         }
     }
 
