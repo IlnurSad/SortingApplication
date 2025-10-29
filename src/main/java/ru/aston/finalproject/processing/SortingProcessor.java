@@ -8,13 +8,14 @@ import ru.aston.finalproject.managers.MenuManager;
 import ru.aston.finalproject.managers.SearchManager;
 import ru.aston.finalproject.managers.SortingManager;
 import ru.aston.finalproject.binarysearch.SearchUI;
+import ru.aston.finalproject.interfaces.SearchResultListener;
 import ru.aston.finalproject.appender.FileAppender;
 
 import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
-public class SortingProcessor implements SearchUI.SearchResultListener {
+public class SortingProcessor implements SearchResultListener {
     private static final String OUTPUT_FILE_PATH = "src/main/resources/output.txt";
     public final Scanner scanner;
     private final MenuManager menuManager;
@@ -23,19 +24,20 @@ public class SortingProcessor implements SearchUI.SearchResultListener {
     private final SearchManager<Cat> catSearchManager;
     private final SearchManager<Person> personSearchManager;
     private final FileAppender<Object> fileAppender;
-    
+
     private Comparator<Object> currentCatComparator;
     private Comparator<Object> currentPersonComparator;
-    
+
     public SortingProcessor(Scanner scanner, MenuManager menuManager, DataLoaderManager dataLoaderManager, SearchManager<Cat> catSearchManager,
-                            SearchManager<Person> personSearchManager, SearchUI searchUI) {
+                            SearchManager<Person> personSearchManager) {
         this.scanner = scanner;
         this.menuManager = menuManager;
         this.dataLoaderManager = dataLoaderManager;
         this.catSearchManager = catSearchManager;
         this.personSearchManager = personSearchManager;
-        this.searchUI = new SearchUI(scanner, this);
         this.fileAppender = new FileAppender<>(OUTPUT_FILE_PATH);
+
+        this.searchUI = new SearchUI(scanner, this);
     }
 
     @Override

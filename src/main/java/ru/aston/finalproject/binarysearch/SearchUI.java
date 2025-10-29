@@ -4,6 +4,7 @@ import ru.aston.finalproject.entity.Cat;
 import ru.aston.finalproject.entity.Person;
 import ru.aston.finalproject.managers.MenuManager;
 import ru.aston.finalproject.managers.SearchManager;
+import ru.aston.finalproject.interfaces.SearchResultListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -12,19 +13,17 @@ public class SearchUI {
     private Scanner scanner;
     private SearchResultListener searchResultListener;
 
-    public interface SearchResultListener {
-        <T> void onSearchResults(List<T> list, List<Integer> positions, String entityType);
-    }
-
     public SearchUI(Scanner scanner) {
         this.scanner = scanner;
     }
 
+    // Конструктор с listener для передачи результатов
     public SearchUI(Scanner scanner, SearchResultListener listener) {
         this.scanner = scanner;
         this.searchResultListener = listener;
     }
 
+    // Устанавливаем listener
     public void setSearchResultListener(SearchResultListener listener) {
         this.searchResultListener = listener;
     }

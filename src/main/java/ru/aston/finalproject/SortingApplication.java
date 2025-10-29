@@ -31,8 +31,7 @@ public class SortingApplication {
                 menuManager,
                 dataLoaderManager,
                 catSearchManager,
-                personSearchManager,
-                searchUI
+                personSearchManager
         );
     }
 
