@@ -14,7 +14,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
-public class SortingProcessor {
+public class SortingProcessor implements SearchUI.SearchResultListener {
     private static final String OUTPUT_FILE_PATH = "src/main/resources/output.txt";
     public final Scanner scanner;
     private final MenuManager menuManager;
@@ -34,8 +34,18 @@ public class SortingProcessor {
         this.dataLoaderManager = dataLoaderManager;
         this.catSearchManager = catSearchManager;
         this.personSearchManager = personSearchManager;
-        this.searchUI = searchUI;
+        this.searchUI = new SearchUI(scanner, this);
         this.fileAppender = new FileAppender<>(OUTPUT_FILE_PATH);
+    }
+
+    @Override
+    public <T> void onSearchResults(List<T> list, List<Integer> positions, String entityType) {
+        fileAppender.writeSearchResults(list, positions, Object::toString);
+
+        fileAppender.appendValue("Тип сущности: " + entityType, s -> s.toString());
+        fileAppender.appendValue("Всего найдено совпадений: " + positions.size(), s -> s.toString());
+
+        System.out.println("Результаты поиска записаны в файл.");
     }
     
     @SuppressWarnings("unchecked")
